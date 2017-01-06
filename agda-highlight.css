@@ -1,0 +1,50 @@
+/* NOTE: To avoid duplication, please edit
+ *       file:///home/gunp/.spacemacs.d/agda-highlight.css
+ *       then import here later
+ */
+
+@namespace url(http://www.w3.org/1999/xhtml);
+
+@-moz-document domain("agda.github.io") {
+html, body {
+  color: #e9caad;
+  background: #000000; 
+  font-family: "DejaVu Sans Mono",Consolas,"Andale Mono WT","Andale Mono","Lucida Console","Lucida Sans Typewriter","DejaVu Sans Mono","Bitstream Vera Sans Mono","Liberation Mono","Nimbus Mono L",Monaco,"Courier New",Courier,monospace;
+  font-size: 16pt;
+  line-height: 1.5;
+}
+  
+/* Aspects. */
+.Comment       { color: #aaa }
+.Keyword       { color: blueviolet }
+.String        { color: red }
+.Number        { color: red }
+.Symbol        { color: dodgerblue }
+.PrimitiveType { color: red }
+.Operator      { color: gold}
+
+/* NameKinds. */
+.Bound                  { color: forestgreen }
+.InductiveConstructor   { color: deeppink }
+.CoinductiveConstructor { color: deeppink }
+.Datatype               { color: #ac422f }
+.Field                  { color: deeppink }
+.Function               { color: #ff6800 }
+.Module                 { color: darkgreen }
+.Postulate              { color: yellow }
+.Primitive              { color: gold }
+.Record                 { color: #ac422f }
+
+/* OtherAspects. */
+.DottedPattern      { color: lightsalmon }
+.UnsolvedMeta       { color: dimgray; background: orange         }
+.UnsolvedConstraint { color: dimgray; background: yellow         }
+.TerminationProblem { color: dimgray; background: hotpink        }
+.IncompletePattern  { color: dimgray; background: lightsalmon    }
+.Error              { color: dimgray; background: red            }
+.TypeChecks         { color: dimgray; background: deepskyblue    }
+
+/* Standard attributes. */
+a { text-decoration: none }
+a[href]:hover { background-color: #303030 }
+}

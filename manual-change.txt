@@ -1,0 +1,41 @@
+~/.emacs.d/layers/+lang/agda/packages.el                  -- lines 39-47 to lines 39-48
+  comment font-lock dependencies from agda faces
+
+-------------------------------------------------------------------------------
+
+~/.emacs.d/layers/+lang/agda/packages.el                  -- line 87 to line 87
+---
+ (defun idris/pre-init-golden-ratio ()
++++
+ (defun agda/pre-init-golden-ratio ()
+
+-------------------------------------------------------------------------------
+
+~/.emacs.d/elpa/evil-20160827.1510/evil-core.el  -- line 1221 to lines 1221-1225
+---
+                 (activate-input-method evil-input-method)
++++
+                 (progn
+                   (unless deactivate-current-input-method-function
+                     (setq deactivate-current-input-method-function
+                           (lambda () ())))
+                   (activate-input-method evil-input-method))
+*** Note: after changing this, need to recomplie evil entirely
+  (in terminal) find ~/.emacs.d/elpa/evil-201<TAB> -name "*.elc" -type f | xargs rm -f
+  (in emacs)    C-u 0 M-x RET byte-force-recompile RET ~/.emacs.d/elpa/evil-201<TAB>
+
+-------------------------------------------------------------------------------
+
+~/.emacs.d/.cache/quelpa/package/
+  rename evil-unimpaired-0.1pre0.20170106.04350.el
+      to evil-unimpaired-0.1pre0.20170106.4350.el
+
+-------------------------------------------------------------------------------
+
+~/.emacs.d/elpa/fringe-helper-20140620.1409/fringe-helper.el     -- lines 185-186
+---
+    (setq beg (max beg (overlay-start ov)))
+    (setq end (min end (overlay-end ov)))
++++
+    (setq beg (max (min beg end) (overlay-start ov)))
+    (setq end (min (max beg end) (overlay-end ov)))
