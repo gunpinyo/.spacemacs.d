@@ -352,7 +352,7 @@ layers configuration. You are free to put any user code."
   (cua-mode t)
   (setq cua-auto-tabify-rectangles nil)
   (transient-mark-mode 1)
-  (setq cua-keep-region-after-copy t)
+  (setq cua-keep-region-after-copy nil)
 
   ;; fill-column-indicator
   (define-globalized-minor-mode global-fci-mode fci-mode
@@ -385,6 +385,7 @@ layers configuration. You are free to put any user code."
   ;; drag-stuff
   (require 'drag-stuff)
   (drag-stuff-define-keys)
+  (setq-default drag-stuff-except-modes '(org-mode))
   (drag-stuff-global-mode t)
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
