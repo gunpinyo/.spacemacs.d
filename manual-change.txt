@@ -41,13 +41,3 @@
 ~/.emacs.d/.cache/quelpa/package/
   rename evil-unimpaired-0.1pre0.20170106.04350.el
       to evil-unimpaired-0.1pre0.20170106.4350.el
-
--------------------------------------------------------------------------------
-
-~/.emacs.d/elpa/fringe-helper-20140620.1409/fringe-helper.el     -- lines 185-186
----
-    (setq beg (max beg (overlay-start ov)))
-    (setq end (min end (overlay-end ov)))
-+++
-    (setq beg (max (min beg end) (overlay-start ov)))
-    (setq end (min (max beg end) (overlay-end ov)))

@@ -37,6 +37,7 @@ values."
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode)
      command-log
+     dash
      elm
      emacs-lisp
      git
@@ -60,15 +61,17 @@ values."
      spell-checking
      syntax-checking
      typography
-     version-control
-     )
+     (version-control :variables
+                      version-control-diff-tool 'diff-hl
+                      version-control-global-margin t)
+    )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
-   '(dash-functional  ;; lean dependency
-     lua-mode         ;; lean dependency
+   '(dash-functional     ;; lean dependency
+     lua-mode            ;; lean dependency
      multiple-cursors
      drag-stuff)
    ;; A list of packages and/or extensions that will not be install and loaded.
@@ -320,23 +323,19 @@ in `dotspacemacs/user-config'."
 This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
 
-  ;; enable this when debuging
-  (setq debug-on-error t)
+  ;; ;; enable this when debuging
+  ;; (setq-default debug-on-error t)
 
   (global-font-lock-mode 1)
   (global-linum-mode 1)
-  (setq powerline-default-separator 'arrow)
-  (setq evil-default-state 'emacs)
 
+  (setq-default powerline-default-separator 'arrow)
+  (setq-default evil-default-state 'emacs)
   (setq-default line-spacing 16)
   (setq-default tab-width 2)
   (setq-default c-basic-indent 2)
   (setq-default indent-tabs-mode nil)
-
-  ;; try to prevent "Invalid search bound (wrong side of point)"
-  (setq-default volatile-highlights-mode nil)
-  (setq-default cache-long-scans nil)
-  (setq org-replace-disputed-keys t) ;; avoid conflict with cua
+  (setq-default org-replace-disputed-keys t) ;; avoid conflict with cua
 
   ;; font (also see `dotspacemacs-default-font' for font general setting)
   (dolist (ft (fontset-list)) (set-fontset-font ft 'unicode
@@ -370,8 +369,6 @@ layers configuration. You are free to put any user code."
 
   ;; neotree
   (setq neo-theme 'nerd)
-  ;; (neotree-show)
-  ;; (select-window-1)
 
   ;; multi-term
   (setq multi-term-program "/usr/bin/env zsh")
@@ -380,24 +377,21 @@ layers configuration. You are free to put any user code."
   ;;    Additional packages dependent
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+  ;;;;;;;;;;;;;;;;;;;
   ;; multiple-cursors
   (require 'multiple-cursors)
 
+  ;;;;;;;;;;;;;
   ;; drag-stuff
   (require 'drag-stuff)
   (drag-stuff-define-keys)
   (drag-stuff-global-mode t)
 
-  ;; command-log-mode
-  (require 'command-log-mode)
-  (setq clm/log-command-exceptions* '())
-  ;; disable ability to count repeated commands
-  ;;(add-hook 'pre-command-hook (lambda()(setq clm/last-keyboard-command nil)))
-
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;;    Layers dependent
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+  ;;;;;;;
   ;; agda
   (load-file (let ((coding-system-for-read 'utf-8))
                (shell-command-to-string "agda-mode locate")))
@@ -407,17 +401,28 @@ layers configuration. You are free to put any user code."
   ;; obsolete variable
   (makunbound 'agda2-include-dirs)
 
+  ;;;;;;;;;;;;;;;;;;;
+  ;; command-log-mode
+  (require 'command-log-mode)
+  (setq clm/log-command-exceptions* '())
+  ;; disable ability to count repeated commands
+  ;;(add-hook 'pre-command-hook (lambda()(setq clm/last-keyboard-command nil)))
+
+  ;;;;;;
   ;; elm
   (setq spacemacs-indent-sensitive-modes
         (add-to-list 'spacemacs-indent-sensitive-modes 'elm-mode))
   (add-hook 'elm-mode-hook 'global-company-mode)
 
+  ;;;;;;;;
   ;; idris
   (require 'idris-mode)
 
+  ;;;;;;;;
   ;; latex
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
+  ;;;;;;;;;
   ;; python
   (require 'python)
   (setq python-shell-interpreter "python")
@@ -425,26 +430,34 @@ layers configuration. You are free to put any user code."
     "Return the string used to execute the inferior Python process."
     "/usr/local/bin/ipython3 -i")
 
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; spell-checking (flyspell)
   (setq ispell-program-name "aspell")
   (setq ispell-local-dictionary "en_GB")
   (setq ispell-local-dictionary-alist
         '(("en_GB" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil nil nil utf-8)))
-
-  ;; syntax-checking
   (add-hook 'fundamental-mode-hook 'flyspell-mode)
   (add-hook 'LaTeX-mode-hook 'flyspell-mode)
   (add-hook 'text-mode-hook 'flyspell-mode)
 
-  ;; flycheck
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; syntax-checking (flycheck)
   (add-hook 'after-init-hook 'global-flycheck-mode)
+
+  ;;;;;;;;;;;;;;;;;;
+  ;; version-control
+  (require 'diff-hl)
+  (global-diff-hl-mode 1)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+  (diff-hl-dir-mode 1)
+  (diff-hl-flydiff-mode 1)
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; External from spacemacs config
+  ;;   WARNING: put extra thing into a layer if possible instead of here
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  ;; WARNING: put extra thing into a layer if possible instead of here
-
+  ;;;;;;;
   ;; lean
   ;; Install required/optional packages for lean-mode
   (defvar lean-mode-required-packages
@@ -645,7 +658,6 @@ i.e. change right window to bottom, or change bottom window to right."
   (spacemacs/set-leader-keys "oe" 'spacemacs/shell-pop-eshell)
   (spacemacs/set-leader-keys "of" 'neotree-find)
   (spacemacs/set-leader-keys "og" 'projectile-grep)
-  (spacemacs/set-leader-keys "ol" 'flycheck-error-list)
   (spacemacs/set-leader-keys "on" 'lunch-nautilus)
   (spacemacs/set-leader-keys "op" 'projectile-run-shell-command-in-root)
   (spacemacs/set-leader-keys "oq" 'xah-unfill-paragraph)
@@ -704,6 +716,9 @@ i.e. change right window to bottom, or change bottom window to right."
  '(agda2-highlight-unsolved-meta-face ((t (:background "orange" :foreground "dim gray"))))
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+ '(diff-hl-change ((t (:background "darkblue" :underline nil :weight normal))))
+ '(diff-hl-delete ((t (:background "darkred" :underline nil :weight normal))))
+ '(diff-hl-insert ((t (:background "darkgreen" :underline nil :weight normal))))
  '(dired-directory ((t (:foreground "deep sky blue"))))
  '(dired-header ((t (:foreground "VioletRed2"))))
  '(dired-symlink ((t (:foreground "forest green"))))
@@ -729,6 +744,7 @@ i.e. change right window to bottom, or change bottom window to right."
  ;; If there is more than one, they won't work right.
  '(agda2-highlight-face-groups nil)
  '(agda2-highlight-level (quote interactive))
+ '(diff-hl-draw-borders nil)
  '(face-font-selection-order (quote (:width :height :weight :slant)))
  '(flyspell-auto-correct-binding [ignore])
  '(font-use-system-font t)
