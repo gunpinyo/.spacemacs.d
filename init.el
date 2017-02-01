@@ -23,7 +23,8 @@ values."
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
-   '(;; ----------------------------------------------------------------
+   '(
+     csv;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
@@ -72,6 +73,7 @@ values."
    dotspacemacs-additional-packages
    '(dash-functional     ;; lean dependency
      lua-mode            ;; lean dependency
+     cubicaltt
      multiple-cursors
      drag-stuff)
    ;; A list of packages and/or extensions that will not be install and loaded.
@@ -655,6 +657,7 @@ i.e. change right window to bottom, or change bottom window to right."
 
   (spacemacs/declare-prefix "o" "gunp-personal-keymap")
   (spacemacs/set-leader-keys "oa" 'mc/mark-all-like-this)
+  (spacemacs/set-leader-keys "od" 'kill-buffer-and-window)
   (spacemacs/set-leader-keys "oi" 'shell-command)
   (spacemacs/set-leader-keys "oe" 'spacemacs/shell-pop-eshell)
   (spacemacs/set-leader-keys "of" 'neotree-find)
@@ -726,6 +729,7 @@ i.e. change right window to bottom, or change bottom window to right."
  '(font-latex-math-face ((t (:foreground "magenta"))))
  '(font-latex-sedate-face ((t (:foreground "dark violet"))))
  '(font-latex-verbatim-face ((t (:foreground "forest green"))))
+ '(highlight ((t (:background "gray12" :foreground "#e9caad" :underline nil :weight normal))))
  '(idris-semantic-bound-face ((t (:foreground "navajo white"))))
  '(idris-semantic-function-face ((t (:foreground "#ff6800"))))
  '(idris-semantic-type-face ((t (:foreground "lime green"))))
